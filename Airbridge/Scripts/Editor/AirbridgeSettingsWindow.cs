@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 
 using UnityEngine;
 using UnityEditor;
@@ -11,7 +11,6 @@ using Assets.Airbridge.Scripts.Editor.Constant;
 internal class AirbridgeSettingsWindow : EditorWindow
 {
     private const string TemplatePrefix = ".template";
-    private const string MetaPrefix = ".meta";
 
     private Vector2 _scrollPos;
     private List<AirbridgeDataToggleSection> _sections;
@@ -153,11 +152,11 @@ internal class AirbridgeSettingsWindow : EditorWindow
             string activityPath = Path.Combine(pluginPath, entry.GetActivityFileName());
 
             File.Copy(defaultActivityPath, activityPath);
-            Debug.LogFormat("Copied default Android Airbridge Activity file from \'{0}\'", defaultActivityPath);
+            Debug.Log("Updated Airbridge Android Activity file.");
         }
-        catch (Exception exception)
+        catch (Exception e)
         {
-            Debug.LogErrorFormat("Something broken while updating Android Airbridge Activity file : {0}", exception);
+            Debug.LogError($"Failed to update Airbridge Android Activity file: {e.Message}");
         }
     }
 
@@ -165,35 +164,26 @@ internal class AirbridgeSettingsWindow : EditorWindow
     {
         try
         {
-            string androidManifestDirPath = Path.Combine(Application.dataPath, "Plugins", "Android");
-            string androidManifestPath = Path.Combine(androidManifestDirPath, "AndroidManifest.xml");
+            string destAndroidManifestPath =
+                Path.Combine(Application.dataPath, "Plugins", "Android", "AndroidManifest.xml");
 
             // AirbridgeAndroidApplicationEntry가 None이 아닌 경우,
             // AndroidManifest.xml이 존재하지 않으면 기본 AndroidManifest.xml 템플릿을 추가한다.
             if (!entry.IsNone())
             {
-                string defaultManifestPath = Path.Combine(
+                string srcAndroidManifestPath = Path.Combine(
                     AirbridgeUtils.GetUnityPackageAssetsPath(),
                     "Plugins", "Airbridge", "Android",
                     entry.GetManifestFileName()
                 );
 
-                if (!File.Exists(androidManifestPath))
+                if (PrepareFile(destAndroidManifestPath))
                 {
-                    Debug.Log("Couldn't find any Android App Manifest file");
-
-                    if (!Directory.Exists(androidManifestDirPath))
-                    {
-                        Directory.CreateDirectory(androidManifestDirPath);
-                        Debug.LogFormat("Create Android App Manifest directory : {0}", androidManifestDirPath);
-                    }
-
-                    File.Copy(defaultManifestPath, androidManifestPath);
-                    Debug.LogFormat("Copied default Android App Manifest file from \'{0}\'", defaultManifestPath);
+                    File.Copy(srcAndroidManifestPath, destAndroidManifestPath);
                 }
             }
 
-            AndroidManifest androidManifest = new AndroidManifest(androidManifestPath);
+            AndroidManifest androidManifest = new AndroidManifest(destAndroidManifestPath);
             androidManifest.SetPackageName(Application.identifier);
             androidManifest.SetPermission("android.permission.INTERNET");
             androidManifest.SetPermission("android.permission.ACCESS_NETWORK_STATE");
@@ -213,7 +203,7 @@ internal class AirbridgeSettingsWindow : EditorWindow
                     entry.GetAirbridgeActivityName());
             }
 
-            androidManifest.Save(androidManifestPath);
+            androidManifest.Save(destAndroidManifestPath);
 
             // Airbridge Setting의 다음 값을 참고하여 AndroidManifest.xml을 수정한다.
             //  - appName
@@ -223,22 +213,15 @@ internal class AirbridgeSettingsWindow : EditorWindow
             // Default, Dev, Prod 환경별로 서로 다른 값을 가지므로, 별도의 AndroidManifest.xml 파일로 관리한다.
             AirbridgeData airbridgeData = GetAirbridgeData();
 
-            string airbridgeAndroidManifestPath = Path.Combine(AirbridgeUtils.GetUnityPackageAssetsPath(),
+            string libAndroidManifestPath = Path.Combine(AirbridgeUtils.GetUnityPackageAssetsPath(),
                 "Plugins", "Android", "Airbridge.androidlib", "AndroidManifest.xml");
 
-            if (!File.Exists(airbridgeAndroidManifestPath))
+            if (PrepareFile(libAndroidManifestPath))
             {
-                Debug.Log("Couldn't find Airbridge App Manifest file");
-
-                string airbridgeAndroidManifestTemplatePath = airbridgeAndroidManifestPath + TemplatePrefix;
-                File.Copy(airbridgeAndroidManifestTemplatePath + MetaPrefix, airbridgeAndroidManifestPath + MetaPrefix);
-                File.Copy(airbridgeAndroidManifestTemplatePath, airbridgeAndroidManifestPath);
-
-                Debug.LogFormat("Copied Airbridge Android App Manifest file from \'{0}\'",
-                    airbridgeAndroidManifestTemplatePath);
+                File.Copy(libAndroidManifestPath + TemplatePrefix, libAndroidManifestPath);
             }
-
-            AndroidManifest airbridgeAndroidManifest = new AndroidManifest(airbridgeAndroidManifestPath);
+            
+            AndroidManifest airbridgeAndroidManifest = new AndroidManifest(libAndroidManifestPath);
             airbridgeAndroidManifest.ResetAirbridgeAndroidManifest(androidManifest);
 
             // Airbridge App Links
@@ -266,13 +249,13 @@ internal class AirbridgeSettingsWindow : EditorWindow
                 airbridgeAndroidManifest.SetUnityActivityAppLinksIntentFilter(customDomain);
             }
 
-            airbridgeAndroidManifest.Save(airbridgeAndroidManifestPath);
+            airbridgeAndroidManifest.Save(libAndroidManifestPath);
 
-            Debug.Log("Updated Android App Manifest (AndroidManifest.xml)");
+            Debug.Log("Updated Airbridge Android Manifest file.");
         }
-        catch (Exception exception)
+        catch (Exception e)
         {
-            Debug.LogErrorFormat("Something broken while updating Android App Manifest file : {0}", exception);
+            Debug.LogError($"Failed to update Airbridge Android Manifest file: {e.Message}");
         }
     }
 
@@ -280,18 +263,11 @@ internal class AirbridgeSettingsWindow : EditorWindow
     {
         string pluginPath = AirbridgeUtils.GetPluginPath(AirbridgeUtils.Platform.Android);
         if (pluginPath == null) return;
-
+        string path = Path.Combine(pluginPath, "AirbridgeSettings.java");
+        
         try
         {
-            string settingsPath = Path.Combine(pluginPath, "AirbridgeSettings.java");
-
-            if (!File.Exists(settingsPath))
-            {
-                File.Create(settingsPath).Dispose();
-            }
-
             AirbridgeData airbridgeData = GetAirbridgeData();
-
             string content = 
                 "package co.ab180.airbridge.unity;\n"
                 + "\n"
@@ -330,14 +306,14 @@ internal class AirbridgeSettingsWindow : EditorWindow
                 ) + "\";\n"
                 + "\n"
                 + "}\n";
-
-            File.WriteAllText(settingsPath, content);
-
-            Debug.Log("Updated Android Airbridge settings (AirbridgeSettings.java)");
+            
+            PrepareFile(path);
+            File.WriteAllText(path, content);
+            Debug.Log("Updated Android Airbridge settings file.");
         }
-        catch (Exception exception)
+        catch (Exception e)
         {
-            Debug.LogErrorFormat("Something broken while updating Android Airbridge settings file : {0}", exception);
+            Debug.LogError($"Failed to update Android Airbridge settings file: {e.Message}");
         }
     }
 
@@ -345,17 +321,11 @@ internal class AirbridgeSettingsWindow : EditorWindow
     {
         string pluginPath = AirbridgeUtils.GetPluginPath(AirbridgeUtils.Platform.iOS);
         if (pluginPath == null) return;
-
+        string path = Path.Combine(pluginPath, "AUAppSetting.h");
+        
         try
         {
-            string path = Path.Combine(pluginPath, "AUAppSetting.h");
-            if (!File.Exists(path))
-            {
-                File.Create(path).Dispose();
-            }
-
             AirbridgeData airbridgeData = GetAirbridgeData();
-
             string content = 
                 "#ifndef AUAppSetting_h\n"
                 + "#define AUAppSetting_h\n"
@@ -393,14 +363,41 @@ internal class AirbridgeSettingsWindow : EditorWindow
                 + "static BOOL calculateSKAdNetworkByServer = " + airbridgeData.calculateSKAdNetworkByServer.ToString().ToLower() + ";\n"
                 + "\n"
                 + "#endif\n";
-
+            
+            PrepareFile(path);
             File.WriteAllText(path, content);
-
-            Debug.Log("Updated iOS Airbridge settings (AUAppSetting.h)");
+            Debug.Log("Updated iOS Airbridge settings file.");
         }
-        catch (Exception exception)
+        catch (Exception e)
         {
-            Debug.LogErrorFormat("Something broken while updating iOS Airbridge settings file : {0}", exception);
+            Debug.LogError($"Failed to update iOS Airbridge settings file: {e.Message}");
+        }
+    }
+
+    private static bool PrepareFile(string path)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(path) ||
+                File.Exists(path) ||
+                Directory.Exists(path)) return false;
+
+            var directory = Path.GetDirectoryName(path);
+            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            File.Create(path).Dispose();
+            AssetDatabase.Refresh();
+
+            Debug.Log($"File created: '{path}'");
+            return true;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Failed to prepare file '{path}': {e.Message}");
+            throw;
         }
     }
 }
