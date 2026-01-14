@@ -2,33 +2,46 @@
 
 using System;
 using System.IO;
+using UnityEditor;
 using UnityEngine;
 
 // Exclude a class from the document
 /// @cond HIDDEN_SYMBOLS
 partial class AirbridgeUtils
 {
+    private static string ParentDirectory(string path, int depth = 0)
+    {
+        if (depth < 0) depth = 0;
+
+        var dir = path;
+        for (var i = 0; i < depth; i++)
+        {
+            dir = Path.GetDirectoryName(dir);
+        }
+
+        return dir;
+    }
+
     /// <summary>
     /// Airbridge Unity SDK 의 Assets 폴더 경로를 반환합니다,
     /// </summary>
     internal static string GetUnityPackageAssetsPath()
     {
-        string path = Application.dataPath;
-
         try
         {
-            string packagePath = Path.GetFullPath("Packages/co.ab180.airbridge-unity-sdk/Assets");
-            if (Directory.Exists(packagePath))
-            {
-                path = packagePath;
-            }
+            MonoScript script = MonoScript.FromScriptableObject(ScriptableObject.CreateInstance<AirbridgeData>());
+
+            // scriptPath = ".../AirbridgeData.cs"
+            string scriptPath = AssetDatabase.GetAssetPath(script);
+            string assetPath = ParentDirectory(scriptPath, 4);
+            return assetPath;
         }
         catch (Exception)
         {
             /* ignored */
         }
 
-        return path;
+        return Application.dataPath;
     }
 
     /// <summary>
