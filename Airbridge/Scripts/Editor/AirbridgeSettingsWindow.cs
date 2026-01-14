@@ -231,8 +231,8 @@ internal class AirbridgeSettingsWindow : EditorWindow
                 Debug.Log("Couldn't find Airbridge App Manifest file");
 
                 string airbridgeAndroidManifestTemplatePath = airbridgeAndroidManifestPath + TemplatePrefix;
-                File.Copy(airbridgeAndroidManifestTemplatePath, airbridgeAndroidManifestPath);
                 File.Copy(airbridgeAndroidManifestTemplatePath + MetaPrefix, airbridgeAndroidManifestPath + MetaPrefix);
+                File.Copy(airbridgeAndroidManifestTemplatePath, airbridgeAndroidManifestPath);
 
                 Debug.LogFormat("Copied Airbridge Android App Manifest file from \'{0}\'",
                     airbridgeAndroidManifestTemplatePath);
@@ -292,37 +292,44 @@ internal class AirbridgeSettingsWindow : EditorWindow
 
             AirbridgeData airbridgeData = GetAirbridgeData();
 
-            string content = $$"""
-                               package co.ab180.airbridge.unity;
-
-                               public class AirbridgeSettings {
-                               public static String appName = "{{airbridgeData.appName}}";
-                               public static String appToken = "{{airbridgeData.appToken}}";
-                               public static String sdkSignatureSecretID = "{{airbridgeData.sdkSignatureSecretID}}";
-                               public static String sdkSignatureSecret = "{{airbridgeData.sdkSignatureSecret}}";
-                               public static int logLevel = {{airbridgeData.logLevel}};
-                               public static String customDomain = "{{string.Join(AirbridgeEditorConstant.CustomDomain.CustomDomainSeparator.ToString(), airbridgeData.customDomainList)}}";
-                               public static int sessionTimeoutSeconds = {{airbridgeData.sessionTimeoutSeconds}};
-                               public static boolean userInfoHashEnabled = {{airbridgeData.userInfoHashEnabled.ToString().ToLower()}};
-                               public static boolean locationCollectionEnabled = {{airbridgeData.locationCollectionEnabled.ToString().ToLower()}};
-                               public static boolean trackAirbridgeLinkOnly = {{airbridgeData.trackAirbridgeLinkOnly.ToString().ToLower()}};
-                               public static boolean autoStartTrackingEnabled = {{airbridgeData.autoStartTrackingEnabled.ToString().ToLower()}};
-                               public static boolean facebookDeferredAppLinkEnabled = {{airbridgeData.facebookDeferredAppLinkEnabled.ToString().ToLower()}};
-                               public static boolean trackInSessionLifeCycleEventEnabled = {{airbridgeData.trackInSessionLifeCycleEventEnabled.ToString().ToLower()}};
-                               public static boolean pauseEventTransmitOnBackgroundEnabled = {{airbridgeData.pauseEventTransmitOnBackgroundEnabled.ToString().ToLower()}};
-                               public static boolean clearEventBufferOnInitializeEnabled = {{airbridgeData.resetEventBufferEnabled.ToString().ToLower()}};
-                               public static boolean sdkEnabled = {{airbridgeData.sdkEnabled.ToString().ToLower()}};
-                               public static String appMarketIdentifier = "{{airbridgeData.appMarketIdentifier}}";
-                               public static int eventBufferCountLimitInGibibyte = {{airbridgeData.eventMaximumBufferCount}};
-                               public static double eventBufferSizeLimitInGibibyte = {{airbridgeData.eventMaximumBufferSize}};
-                               public static long eventTransmitIntervalSeconds = {{airbridgeData.eventTransmitIntervalSeconds}};
-                               public static String facebookAppId = "{{airbridgeData.facebookAppId}}";
-                               public static boolean isHandleAirbridgeDeeplinkOnly = {{airbridgeData.isHandleAirbridgeDeeplinkOnly.ToString().ToLower()}};
-                               public static String inAppPurchaseEnvironment = "{{airbridgeData.inAppPurchaseEnvironment.ToLowerString()}}";
-                               public static boolean collectTCFDataEnabled = {{airbridgeData.collectTCFDataEnabled.ToString().ToLower()}};
-                               public static String trackingBlocklist = "{{string.Join(AirbridgeEditorConstant.BlockList.TrackingBlocklistSeparator, airbridgeData.trackingBlocklist)}}";
-                               }
-                               """;
+            string content = 
+                "package co.ab180.airbridge.unity;\n"
+                + "\n"
+                + "public class AirbridgeSettings {\n"
+                + "\n"
+                + "public static String appName = \"" + airbridgeData.appName + "\";\n"
+                + "public static String appToken = \"" + airbridgeData.appToken + "\";\n"
+                + "public static String sdkSignatureSecretID = \"" + airbridgeData.sdkSignatureSecretID + "\";\n"
+                + "public static String sdkSignatureSecret = \"" + airbridgeData.sdkSignatureSecret + "\";\n"
+                + "public static int logLevel = " + airbridgeData.logLevel + ";\n"
+                + "public static String customDomain = \"" + string.Join(
+                    separator: AirbridgeEditorConstant.CustomDomain.CustomDomainSeparator.ToString(),
+                    values: airbridgeData.customDomainList
+                ) + "\";\n"
+                + "public static int sessionTimeoutSeconds = " + airbridgeData.sessionTimeoutSeconds + ";\n"
+                + "public static boolean userInfoHashEnabled = " + airbridgeData.userInfoHashEnabled.ToString().ToLower() + ";\n"
+                + "public static boolean locationCollectionEnabled = " + airbridgeData.locationCollectionEnabled.ToString().ToLower() + ";\n"
+                + "public static boolean trackAirbridgeLinkOnly = " + airbridgeData.trackAirbridgeLinkOnly.ToString().ToLower() + ";\n"
+                + "public static boolean autoStartTrackingEnabled = " + airbridgeData.autoStartTrackingEnabled.ToString().ToLower() + ";\n"
+                + "public static boolean facebookDeferredAppLinkEnabled = " + airbridgeData.facebookDeferredAppLinkEnabled.ToString().ToLower() + ";\n"
+                + "public static boolean trackInSessionLifeCycleEventEnabled = " + airbridgeData.trackInSessionLifeCycleEventEnabled.ToString().ToLower() + ";\n"
+                + "public static boolean pauseEventTransmitOnBackgroundEnabled = " + airbridgeData.pauseEventTransmitOnBackgroundEnabled.ToString().ToLower() + ";\n"
+                + "public static boolean clearEventBufferOnInitializeEnabled = " + airbridgeData.resetEventBufferEnabled.ToString().ToLower() + ";\n"
+                + "public static boolean sdkEnabled = " + airbridgeData.sdkEnabled.ToString().ToLower() + ";\n"
+                + "public static String appMarketIdentifier = \"" + airbridgeData.appMarketIdentifier + "\";\n"
+                + "public static int eventBufferCountLimitInGibibyte = " + airbridgeData.eventMaximumBufferCount + ";\n"
+                + "public static double eventBufferSizeLimitInGibibyte = " + airbridgeData.eventMaximumBufferSize + ";\n"
+                + "public static long eventTransmitIntervalSeconds = " + airbridgeData.eventTransmitIntervalSeconds + ";\n"
+                + "public static String facebookAppId = \"" + airbridgeData.facebookAppId + "\";\n"
+                + "public static boolean isHandleAirbridgeDeeplinkOnly = " + airbridgeData.isHandleAirbridgeDeeplinkOnly.ToString().ToLower() + ";\n"
+                + "public static String inAppPurchaseEnvironment = \"" + airbridgeData.inAppPurchaseEnvironment.ToLowerString() + "\";\n"
+                + "public static boolean collectTCFDataEnabled = " + airbridgeData.collectTCFDataEnabled.ToString().ToLower() + ";\n"
+                + "public static String trackingBlocklist = \"" + string.Join(
+                    separator: AirbridgeEditorConstant.BlockList.TrackingBlocklistSeparator,
+                    values: airbridgeData.trackingBlocklist
+                ) + "\";\n"
+                + "\n"
+                + "}\n";
 
             File.WriteAllText(settingsPath, content);
 
@@ -349,41 +356,43 @@ internal class AirbridgeSettingsWindow : EditorWindow
 
             AirbridgeData airbridgeData = GetAirbridgeData();
 
-            string content = $$"""
-                               #ifndef AUAppSetting_h
-                               #define AUAppSetting_h
-
-                               static NSString* appName = @"{{airbridgeData.appName}}";
-                               static NSString* appToken = @"{{airbridgeData.appToken}}";
-                               static NSString* sdkSignatureSecretID = "{{airbridgeData.sdkSignatureSecretID}}";
-                               static NSString* sdkSignatureSecret = "{{airbridgeData.sdkSignatureSecret}}";
-                               static NSUInteger logLevel = {{airbridgeData.logLevel}};
-                               static NSString* appScheme = @"{{airbridgeData.iOSURIScheme}}";
-                               static NSString* customDomain = @"{{string.Join(AirbridgeEditorConstant.CustomDomain.CustomDomainSeparator.ToString(), airbridgeData.customDomainList)}}";
-                               static NSInteger sessionTimeoutSeconds = {{airbridgeData.sessionTimeoutSeconds}};
-                               static BOOL userInfoHashEnabled = {{airbridgeData.userInfoHashEnabled.ToString().ToLower()}};
-                               static BOOL locationCollectionEnabled = {{airbridgeData.locationCollectionEnabled.ToString().ToLower()}};
-                               static BOOL trackAirbridgeLinkOnly = {{airbridgeData.trackAirbridgeLinkOnly.ToString().ToLower()}};
-                               static BOOL autoStartTrackingEnabled = {{airbridgeData.autoStartTrackingEnabled.ToString().ToLower()}};
-                               static BOOL facebookDeferredAppLinkEnabled = {{airbridgeData.facebookDeferredAppLinkEnabled.ToString().ToLower()}};
-                               static NSInteger trackingAuthorizeTimeoutSeconds = {{airbridgeData.iOSTrackingAuthorizeTimeoutSeconds}};
-                               static BOOL trackInSessionLifeCycleEventEnabled = {{airbridgeData.trackInSessionLifeCycleEventEnabled.ToString().ToLower()}};
-                               static BOOL pauseEventTransmitOnBackgroundEnabled = {{airbridgeData.pauseEventTransmitOnBackgroundEnabled.ToString().ToLower()}};
-                               static BOOL clearEventBufferOnInitializeEnabled = {{airbridgeData.resetEventBufferEnabled.ToString().ToLower()}};
-                               static BOOL sdkEnabled = {{airbridgeData.sdkEnabled.ToString().ToLower()}};
-                               static NSString* appMarketIdentifier = @"{{airbridgeData.appMarketIdentifier}}";
-                               static NSInteger eventBufferCountLimitInGibibyte = {{airbridgeData.eventMaximumBufferCount}};
-                               static NSInteger eventBufferSizeLimitInGibibyte = {{airbridgeData.eventMaximumBufferSize}};
-                               static NSInteger eventTransmitIntervalSeconds = {{airbridgeData.eventTransmitIntervalSeconds}};
-                               static NSString* facebookAppId = @"{{airbridgeData.facebookAppId}}";
-                               static BOOL isHandleAirbridgeDeeplinkOnly = {{airbridgeData.isHandleAirbridgeDeeplinkOnly.ToString().ToLower()}};
-                               static NSString* inAppPurchaseEnvironment = @"{{airbridgeData.inAppPurchaseEnvironment.ToLowerString()}}";
-                               static BOOL collectTCFDataEnabled = {{airbridgeData.collectTCFDataEnabled.ToString().ToLower()}};
-                               static NSString* trackingBlocklist = @"{{string.Join(AirbridgeEditorConstant.BlockList.TrackingBlocklistSeparator, airbridgeData.trackingBlocklist)}}";
-                               static BOOL calculateSKAdNetworkByServer = {{airbridgeData.calculateSKAdNetworkByServer.ToString().ToLower()}};
-
-                               #endif
-                               """;
+            string content = 
+                "#ifndef AUAppSetting_h\n"
+                + "#define AUAppSetting_h\n"
+                + "\n"
+                + "static NSString* appName = @\"" + airbridgeData.appName + "\";\n"
+                + "static NSString* appToken = @\"" + airbridgeData.appToken + "\";\n"
+                + "static NSString* sdkSignatureSecretID = @\"" + airbridgeData.sdkSignatureSecretID + "\";\n"
+                + "static NSString* sdkSignatureSecret = @\"" + airbridgeData.sdkSignatureSecret + "\";\n"
+                + "static NSUInteger logLevel = " + airbridgeData.logLevel + ";\n"
+                + "static NSString* appScheme = @\"" + airbridgeData.iOSURIScheme + "\";\n"
+                + "static NSString* customDomain = @\"" + string.Join(
+                    separator: AirbridgeEditorConstant.CustomDomain.CustomDomainSeparator.ToString(),
+                    values: airbridgeData.customDomainList
+                ) + "\";\n"
+                + "static NSInteger sessionTimeoutSeconds = " + airbridgeData.sessionTimeoutSeconds + ";\n"
+                + "static BOOL autoStartTrackingEnabled = " + airbridgeData.autoStartTrackingEnabled.ToString().ToLower() + ";\n"
+                + "static BOOL userInfoHashEnabled = " + airbridgeData.userInfoHashEnabled.ToString().ToLower() + ";\n"
+                + "static BOOL trackAirbridgeLinkOnly = " + airbridgeData.trackAirbridgeLinkOnly.ToString().ToLower() + ";\n"
+                + "static BOOL facebookDeferredAppLinkEnabled = " + airbridgeData.facebookDeferredAppLinkEnabled.ToString().ToLower() + ";\n"
+                + "static NSInteger trackingAuthorizeTimeoutSeconds = " + airbridgeData.iOSTrackingAuthorizeTimeoutSeconds + ";\n"
+                + "static BOOL trackInSessionLifeCycleEventEnabled = " + airbridgeData.trackInSessionLifeCycleEventEnabled.ToString().ToLower() + ";\n"
+                + "static BOOL pauseEventTransmitOnBackgroundEnabled = " + airbridgeData.pauseEventTransmitOnBackgroundEnabled.ToString().ToLower() + ";\n"
+                + "static BOOL clearEventBufferOnInitializeEnabled = " + airbridgeData.resetEventBufferEnabled.ToString().ToLower() + ";\n"
+                + "static BOOL sdkEnabled = " + airbridgeData.sdkEnabled.ToString().ToLower() + ";\n"
+                + "static NSInteger eventBufferCountLimitInGibibyte = " + airbridgeData.eventMaximumBufferCount + ";\n"
+                + "static NSInteger eventBufferSizeLimitInGibibyte = " + airbridgeData.eventMaximumBufferSize + ";\n"
+                + "static NSInteger eventTransmitIntervalSeconds = " + airbridgeData.eventTransmitIntervalSeconds + ";\n"
+                + "static BOOL isHandleAirbridgeDeeplinkOnly = " + airbridgeData.isHandleAirbridgeDeeplinkOnly.ToString().ToLower() + ";\n"
+                + "static NSString* inAppPurchaseEnvironment = @\"" + airbridgeData.inAppPurchaseEnvironment.ToLowerString() + "\";\n"
+                + "static BOOL collectTCFDataEnabled = " + airbridgeData.collectTCFDataEnabled.ToString().ToLower() + ";\n"
+                + "static NSString* trackingBlocklist = @\"" + string.Join(
+                    separator: AirbridgeEditorConstant.BlockList.TrackingBlocklistSeparator,
+                    values: airbridgeData.trackingBlocklist
+                ) + "\";\n"
+                + "static BOOL calculateSKAdNetworkByServer = " + airbridgeData.calculateSKAdNetworkByServer.ToString().ToLower() + ";\n"
+                + "\n"
+                + "#endif\n";
 
             File.WriteAllText(path, content);
 
