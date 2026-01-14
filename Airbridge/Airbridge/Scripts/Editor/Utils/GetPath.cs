@@ -34,7 +34,7 @@ partial class AirbridgeUtils
             // scriptPath = ".../AirbridgeData.cs"
             string scriptPath = AssetDatabase.GetAssetPath(script);
             string assetPath = ParentDirectory(scriptPath, 4);
-            return assetPath;
+            return Path.GetFullPath(assetPath);
         }
         catch (Exception)
         {
