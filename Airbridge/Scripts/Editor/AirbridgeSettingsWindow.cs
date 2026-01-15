@@ -179,7 +179,11 @@ internal class AirbridgeSettingsWindow : EditorWindow
 
                 if (PrepareFile(destAndroidManifestPath))
                 {
-                    File.Copy(srcAndroidManifestPath, destAndroidManifestPath);
+                    File.Copy(
+                        srcAndroidManifestPath,
+                        destAndroidManifestPath,
+                        overwrite: true
+                    );
                 }
             }
 
@@ -218,7 +222,11 @@ internal class AirbridgeSettingsWindow : EditorWindow
 
             if (PrepareFile(libAndroidManifestPath))
             {
-                File.Copy(libAndroidManifestPath + TemplatePrefix, libAndroidManifestPath);
+                File.Copy(
+                    libAndroidManifestPath + TemplatePrefix,
+                    libAndroidManifestPath,
+                    overwrite: true
+                );
             }
             
             AndroidManifest airbridgeAndroidManifest = new AndroidManifest(libAndroidManifestPath);
