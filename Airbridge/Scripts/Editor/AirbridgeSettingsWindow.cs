@@ -397,7 +397,7 @@ internal class AirbridgeSettingsWindow : EditorWindow
             }
 
             File.Create(path).Dispose();
-            AssetDatabase.Refresh();
+            AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
 
             Debug.Log($"File created: '{path}'");
             return true;
