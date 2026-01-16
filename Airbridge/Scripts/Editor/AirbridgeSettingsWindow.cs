@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 
 using UnityEngine;
 using UnityEditor;
@@ -11,6 +11,7 @@ using Assets.Airbridge.Scripts.Editor.Constant;
 internal class AirbridgeSettingsWindow : EditorWindow
 {
     private const string TemplatePrefix = ".template";
+    private const string MetaPrefix = ".meta";
 
     private Vector2 _scrollPos;
     private List<AirbridgeDataToggleSection> _sections;
@@ -179,11 +180,7 @@ internal class AirbridgeSettingsWindow : EditorWindow
 
                 if (PrepareFile(destAndroidManifestPath))
                 {
-                    File.Copy(
-                        srcAndroidManifestPath,
-                        destAndroidManifestPath,
-                        overwrite: true
-                    );
+                    File.Copy(srcAndroidManifestPath, destAndroidManifestPath, true);
                 }
             }
 
@@ -220,13 +217,16 @@ internal class AirbridgeSettingsWindow : EditorWindow
             string libAndroidManifestPath = Path.Combine(AirbridgeUtils.GetUnityPackageAssetsPath(),
                 "Plugins", "Android", "Airbridge.androidlib", "AndroidManifest.xml");
 
+            string libAndroidManifestTemplatePath = libAndroidManifestPath + TemplatePrefix;
+
+            if (File.Exists(libAndroidManifestTemplatePath + MetaPrefix))
+            {
+                File.Move(libAndroidManifestTemplatePath + MetaPrefix, libAndroidManifestPath + MetaPrefix);
+            }
+
             if (PrepareFile(libAndroidManifestPath))
             {
-                File.Copy(
-                    libAndroidManifestPath + TemplatePrefix,
-                    libAndroidManifestPath,
-                    overwrite: true
-                );
+                File.Copy(libAndroidManifestTemplatePath, libAndroidManifestPath, true);
             }
             
             AndroidManifest airbridgeAndroidManifest = new AndroidManifest(libAndroidManifestPath);
@@ -397,7 +397,6 @@ internal class AirbridgeSettingsWindow : EditorWindow
             }
 
             File.Create(path).Dispose();
-            AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
 
             Debug.Log($"File created: '{path}'");
             return true;
