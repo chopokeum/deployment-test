@@ -181,15 +181,15 @@ internal class AirbridgeData : AirbridgeScriptableObject
 
     private void MigrateCustomDomain()
     {
-        if (customDomain == null) { return; }
+        if (customDomain == null) return;
 
-        List<string> migratedCustomDomains = new List<string>();
+        var migratedCustomDomains = new List<string>();
         migratedCustomDomains
-            .AddRangeWithTrim(
-                customDomain, 
+            .MergeDistinctTrimmed(
+                customDomain,
                 AirbridgeEditorConstant.CustomDomain.CustomDomainSeparator
             )
-            .AddRangeWithTrim(customDomainList)
+            .MergeDistinctTrimmed(customDomainList)
             .RemoveDuplicates();
         customDomainList = migratedCustomDomains;
         customDomain = null;

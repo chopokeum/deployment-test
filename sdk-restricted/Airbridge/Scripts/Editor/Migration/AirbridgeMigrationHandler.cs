@@ -39,21 +39,20 @@ internal class AirbridgeMigrationHandler
             .Where(migration => migration.Version.CompareTo(Version.ToAirbridgeVersion()) <= 0)
             .ToList();
 
-        sortedMigrations.ForEach(migration =>
+        foreach (var migration in sortedMigrations
+                     .TakeWhile(_ => SavedVersion != null)
+                     .Where(migration => SavedVersion.CompareTo(migration.Version) < 0))
         {
-            if (SavedVersion.CompareTo(migration.Version) < 0)
+            try
             {
-                try
-                {
-                    Debug.Log($"[Airbridge] Running migration for version: {migration.Version}");
-                    migration.Migrate();
-                }
-                catch
-                {
-                    /* ignored */
-                }
+                Debug.Log($"[Airbridge] Running migration for version: {migration.Version}");
+                migration.Migrate();
             }
-        });
+            catch
+            {
+                /* ignored */
+            }
+        }
 
         // Write latest version
         AirbridgeFileUtils.PrepareFile(SavedVersionFilePath);

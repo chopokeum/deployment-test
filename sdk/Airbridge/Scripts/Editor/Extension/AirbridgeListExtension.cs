@@ -5,7 +5,7 @@ using System.Linq;
 
 internal static class AirbridgeListExtension
 {
-    internal static List<string> AddRangeWithTrim(this List<string> self, string str, char separator)
+    internal static List<string> MergeDistinctTrimmed(this List<string> self, string str, char separator)
     {
         if (string.IsNullOrEmpty(str)) return self;
         self.AddRange(
@@ -19,7 +19,7 @@ internal static class AirbridgeListExtension
         return self;
     }
 
-    internal static List<string> AddRangeWithTrim(this List<string> self, List<string> list)
+    internal static List<string> MergeDistinctTrimmed(this List<string> self, List<string> list)
     {
         if (list == null || list.Count == 0) return self;
         self.AddRange(
