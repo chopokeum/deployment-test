@@ -3,9 +3,7 @@
 using System.Xml;
 using System.Collections.Generic;
 
-// Exclude a class from the document
-/// @cond HIDDEN_SYMBOLS
-class AndroidManifest
+internal class AndroidManifest
 {
     private const string androidUri = "http://schemas.android.com/apk/res/android";
 
@@ -481,7 +479,5 @@ class AndroidManifest
         }
     }
 }
-// ReSharper disable once InvalidXmlDocComment
-/// @endcond
 
 #endif

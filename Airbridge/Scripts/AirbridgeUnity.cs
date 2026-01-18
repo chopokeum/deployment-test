@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
 /// <summary>
 /// %Airbridge Unity SDK
 /// </summary>
-[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
-[SuppressMessage("ReSharper", "CheckNamespace")]
 public class Airbridge
 {
     private static readonly Lazy<IAirbridgePlugin> Lazy = new Lazy<IAirbridgePlugin>(() =>
@@ -566,7 +563,7 @@ public class Airbridge
 #if (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR
         return data.ContainsKey("airbridge-uninstall-tracking");
 #else
-        Debug.Log("Airbridge is not implemented this method on this platform.");
+        Debug.Log("[Airbridge] Airbridge is not implemented this method on this platform.");
         return false;
 #endif
     }

@@ -1,10 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
-// Exclude a class from the document
-/// @cond HIDDEN_SYMBOLS
-[SuppressMessage("ReSharper", "CheckNamespace")]
 internal interface IAirbridgePlugin
 {
     #region Core
@@ -100,5 +96,3 @@ internal interface IAirbridgePlugin
 
     #endregion
 }
-// ReSharper disable once InvalidXmlDocComment
-/// @endcond

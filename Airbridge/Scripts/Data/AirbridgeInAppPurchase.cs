@@ -72,7 +72,7 @@ public class AirbridgeInAppPurchase
                 
                 return new Dictionary<string, object>();
             }
-            catch (Exception)
+            catch
             {
                 return new Dictionary<string, object>();
             }
@@ -94,10 +94,10 @@ public class AirbridgeInAppPurchase
                 {
                     return (Dictionary<string, object>)value;
                 }
-                
+
                 return new Dictionary<string, object>();
             }
-            catch (Exception)
+            catch
             {
                 return new Dictionary<string, object>();
             }

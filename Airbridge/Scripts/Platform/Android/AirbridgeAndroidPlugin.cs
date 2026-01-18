@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-class AirbridgeAndroidPlugin : IAirbridgePlugin
+internal class AirbridgeAndroidPlugin : IAirbridgePlugin
 {
     private static AndroidJavaObject airbridge = new AndroidJavaObject("co.ab180.airbridge.unity.AirbridgeUnity");
 
@@ -112,7 +112,7 @@ class AirbridgeAndroidPlugin : IAirbridgePlugin
                 airbridge.CallStatic("setUserAttribute", key, stringValue);
                 break;
             default:
-                Debug.LogWarning("Invalid data type received for 'user-attribute'. The value will be ignored.");
+                Debug.LogWarning("[Airbridge] Invalid data type received for 'user-attribute'. The value will be ignored.");
                 break;
         }
     }
@@ -311,7 +311,7 @@ class AirbridgeAndroidPlugin : IAirbridgePlugin
     {
         airbridge.CallStatic("stopInAppPurchaseTracking");
     }
-    
+
     public bool IsInAppPurchaseTrackingEnabled()
     {
         return airbridge.CallStatic<bool>("isInAppPurchaseTrackingEnabled");
@@ -331,12 +331,13 @@ class AirbridgeAndroidPlugin : IAirbridgePlugin
             }
             catch (Exception e)
             {
-                Debug.Log("[Airbridge][SetOnInAppPurchaseReceived] Exception:\n" + e.StackTrace);
+                Debug.LogError("[Airbridge] Failed to process in-app purchase callback:\n" + e.StackTrace);
             }
+
             return jsonString;
         }));
     }
-    
+
     #endregion
 }
 

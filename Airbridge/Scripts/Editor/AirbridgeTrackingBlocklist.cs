@@ -3,7 +3,7 @@
 /// <summary>
 /// Tracking data types to block from collection
 /// </summary>
-public enum AirbridgeTrackingBlocklist
+internal enum AirbridgeTrackingBlocklist
 {
     // ios
     IDFA,
@@ -15,9 +15,7 @@ public enum AirbridgeTrackingBlocklist
     AppSetID
 }
 
-// Exclude a class from the document
-/// @cond HIDDEN_SYMBOLS
-public static class AirbridgeTrackingBlocklistExtension
+internal static class AirbridgeTrackingBlocklistExtension
 {
     public static readonly string[] Values =
     {
@@ -28,8 +26,5 @@ public static class AirbridgeTrackingBlocklistExtension
         nameof(AirbridgeTrackingBlocklist.AppSetID)
     };
 }
-
-// ReSharper disable once InvalidXmlDocComment
-/// @endcond
 
 #endif

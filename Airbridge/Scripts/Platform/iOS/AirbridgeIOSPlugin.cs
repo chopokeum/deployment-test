@@ -2,13 +2,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using AOT;
 using UnityEngine;
 
-[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
-[SuppressMessage("ReSharper", "CheckNamespace")]
 internal class AirbridgeIOSPlugin : IAirbridgePlugin
 {
     #region Core
@@ -134,7 +131,7 @@ internal class AirbridgeIOSPlugin : IAirbridgePlugin
                 native_setUserAttributeWithString(key, stringValue);
                 return;
             default:
-                Debug.LogWarning("Invalid data type received for 'user-attribute'. The value will be ignored.");
+                Debug.LogWarning("[Airbridge] Invalid data type received for 'user-attribute'. The value will be ignored.");
                 return;
         }
     }

@@ -3,15 +3,13 @@
 /// <summary>
 /// Enumeration of in-app purchase environment used in [AirbridgeData](@ref AirbridgeData#inAppPurchaseEnvironment).
 /// </summary>
-public enum AirbridgeInAppPurchaseEnvironment
+internal enum AirbridgeInAppPurchaseEnvironment
 {
     Production,
     Sandbox
 }
 
-// Exclude a class from the document
-/// @cond HIDDEN_SYMBOLS
-public static class AirbridgeInAppPurchaseEnvironmentExtension
+internal static class AirbridgeInAppPurchaseEnvironmentExtension
 {
     public static readonly string[] Environments =
     {
@@ -24,7 +22,5 @@ public static class AirbridgeInAppPurchaseEnvironmentExtension
         return environment.ToString().ToLower();
     }
 }
-// ReSharper disable once InvalidXmlDocComment
-/// @endcond
 
 #endif

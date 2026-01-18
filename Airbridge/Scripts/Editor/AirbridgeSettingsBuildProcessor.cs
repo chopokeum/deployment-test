@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 
-public class AirbridgeSettingsBuildProcessor : IPreprocessBuildWithReport
+internal class AirbridgeSettingsBuildProcessor : IPreprocessBuildWithReport
 {
     public int callbackOrder => 0;
 

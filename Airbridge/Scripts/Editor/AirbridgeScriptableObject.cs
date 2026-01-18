@@ -5,8 +5,6 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-// Exclude a class from the document
-/// @cond HIDDEN_SYMBOLS
 internal abstract class AirbridgeScriptableObject : ScriptableObject
 {
     private const string AssetPath = "Assets/Airbridge/Resources";
@@ -51,7 +49,7 @@ internal abstract class AirbridgeScriptableObject : ScriptableObject
     }
 }
 
-internal static class AirbridgeScriptableObjectExtensions
+internal static class AirbridgeScriptableObjectExtension
 {
     public static SerializedObject GetSerializedObject(this AirbridgeScriptableObject airbridgeScriptableObject)
     {
@@ -64,8 +62,5 @@ internal static class AirbridgeScriptableObjectExtensions
         AssetDatabase.SaveAssets();
     }
 }
-
-// ReSharper disable once InvalidXmlDocComment
-/// @endcond
 
 #endif

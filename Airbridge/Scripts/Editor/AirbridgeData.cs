@@ -2,14 +2,12 @@
 
 using System;
 using System.Collections.Generic;
-using Assets.Airbridge.Scripts.Editor.Constant;
-using Assets.Airbridge.Scripts.Editor.Extension;
 using UnityEngine;
 
 /// <summary>
 /// Data used in %Airbridge Settings
 /// </summary>
-class AirbridgeData : AirbridgeScriptableObject
+internal class AirbridgeData : AirbridgeScriptableObject
 {
     private const string AssetNamePrefix = "AirbridgeData";
 

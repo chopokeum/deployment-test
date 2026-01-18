@@ -1,9 +1,7 @@
 using System;
 using UnityEngine;
 
-// Exclude a class from the document
-/// @cond HIDDEN_SYMBOLS
-class AirbridgeCallbackAndroidBridge : AndroidJavaProxy
+internal class AirbridgeCallbackAndroidBridge : AndroidJavaProxy
 {
     private Action<string> Callback { get; }
 
@@ -18,11 +16,12 @@ class AirbridgeCallbackAndroidBridge : AndroidJavaProxy
     }
 }
 
-class AirbridgeCallbackWithReturnAndroidBridge : AndroidJavaProxy
+internal class AirbridgeCallbackWithReturnAndroidBridge : AndroidJavaProxy
 {
     private Func<string, string> Callback { get; }
 
-    public AirbridgeCallbackWithReturnAndroidBridge(Func<string, string> callback) : base("co.ab180.airbridge.unity.AirbridgeCallbackWithReturn")
+    public AirbridgeCallbackWithReturnAndroidBridge(Func<string, string> callback) : base(
+        "co.ab180.airbridge.unity.AirbridgeCallbackWithReturn")
     {
         Callback = callback;
     }
@@ -32,5 +31,3 @@ class AirbridgeCallbackWithReturnAndroidBridge : AndroidJavaProxy
         return Callback.Invoke(arg);
     }
 }
-// ReSharper disable once InvalidXmlDocComment
-/// @endcond

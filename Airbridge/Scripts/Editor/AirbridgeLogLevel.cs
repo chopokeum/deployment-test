@@ -5,7 +5,7 @@ using System;
 /// <summary>
 /// Enumeration of log levels used in [AirbridgeData](@ref AirbridgeData#logLevel).
 /// </summary>
-public enum AirbridgeLogLevel
+internal enum AirbridgeLogLevel
 {
     Debug,
     Info,
@@ -14,9 +14,7 @@ public enum AirbridgeLogLevel
     Fault
 }
 
-// Exclude a class from the document
-/// @cond HIDDEN_SYMBOLS
-public static class AirbridgeLogLevelExtension
+internal static class AirbridgeLogLevelExtension
 {
     public static readonly string[] Levels =
     {
@@ -32,7 +30,5 @@ public static class AirbridgeLogLevelExtension
         return Convert.ToInt32(level);
     }
 }
-// ReSharper disable once InvalidXmlDocComment
-/// @endcond
 
 #endif

@@ -1,11 +1,8 @@
 #if UNITY_EDITOR
 
-using Assets.Airbridge.Scripts.Editor.Constant;
 using UnityEditor;
 using UnityEngine;
 
-// Exclude a class from the document
-// /// @cond HIDDEN_SYMBOLS
 internal class AirbridgeDataToggleSection
 {
     private readonly string _title;
@@ -192,7 +189,5 @@ internal class AirbridgeDataToggleSection
         EditorGUILayout.PropertyField(calculateSKAdNetworkByServer, new GUILayoutOption[] { });
     }
 }
-// ReSharper disable once InvalidXmlDocComment
-/// @endcond
 
 #endif

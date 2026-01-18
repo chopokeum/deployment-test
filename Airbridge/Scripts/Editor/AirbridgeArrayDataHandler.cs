@@ -6,20 +6,20 @@ using System.Linq;
 using UnityEngine;
 using UnityEditor;
 
-abstract class AirbridgeArrayDataHandler
+internal abstract class AirbridgeArrayDataHandler
 {
     protected readonly string Label;
     protected readonly string ElementLabel;
-    
+
     protected abstract string Element { get; }
     protected abstract void DrawElement();
     protected abstract void ResetElement();
-    
+
     public Action<string> AddAction;
     public Action<string> RemoveAction;
-    
+
     private SerializedProperty _property;
-    
+
     // Since the IMGUI is a stateless mode,
     // you must cache the ScrollView's scroll position to preserve the scrolling state.
     private Vector2 _scrollPosition;
@@ -29,9 +29,9 @@ abstract class AirbridgeArrayDataHandler
         Label = label;
         ElementLabel = elementLabel;
     }
-    
+
     public void SetProperty(SerializedProperty property)
-    { 
+    {
         _property = property;
     }
 
@@ -45,7 +45,7 @@ abstract class AirbridgeArrayDataHandler
     {
         return string.IsNullOrEmpty(ElementLabel) ? action : $"{action} {ElementLabel}";
     }
-    
+
     protected virtual void DrawLabel()
     {
         EditorGUILayout.LabelField(Label, GUILayout.Width(300));
@@ -56,7 +56,7 @@ abstract class AirbridgeArrayDataHandler
         if (_property == null)
         {
             Debug.LogError(
-                $"Before calling the Draw() function, set the property through calling the SetProperty() function. (at <{Label}>)");
+                $"[Airbridge] Before calling the Draw() function, set the property through calling the SetProperty() function. (at <{Label}>)");
             return;
         }
 
@@ -145,7 +145,7 @@ abstract class AirbridgeArrayDataHandler
     }
 }
 
-class AirbridgeArrayTextDataHandler : AirbridgeArrayDataHandler
+internal class AirbridgeArrayTextDataHandler : AirbridgeArrayDataHandler
 {
     private string _input = string.Empty;
 
@@ -172,7 +172,7 @@ class AirbridgeArrayTextDataHandler : AirbridgeArrayDataHandler
     }
 }
 
-class AirbridgeArrayDropdownDataHandler : AirbridgeArrayDataHandler
+internal class AirbridgeArrayDropdownDataHandler : AirbridgeArrayDataHandler
 {
     private readonly string[] _options;
 

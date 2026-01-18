@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Exclude a class from the document
-/// @cond HIDDEN_SYMBOLS
-class AirbridgeUnsupportedPlugin: IAirbridgePlugin
+internal class AirbridgeUnsupportedPlugin: IAirbridgePlugin
 {
     public void EnableSDK() { UnsupportedPlatform(); }
 
@@ -85,14 +83,12 @@ class AirbridgeUnsupportedPlugin: IAirbridgePlugin
 
     private void UnsupportedPlatform()
     {
-        Debug.Log("Airbridge is not implemented this method on this platform.");
+        Debug.Log("[Airbridge] Airbridge is not implemented this method on this platform.");
     }
     
     private T UnsupportedPlatform<T>(T toReturn)
     {
-        Debug.Log("Airbridge is not implemented this method on this platform.");
+        Debug.Log("[Airbridge] Airbridge is not implemented this method on this platform.");
         return toReturn;
     }
 }
-// ReSharper disable once InvalidXmlDocComment
-/// @endcond

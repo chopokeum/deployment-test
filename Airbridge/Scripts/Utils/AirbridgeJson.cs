@@ -51,9 +51,7 @@ using System.Text;
 /// </summary>
 ******************/
 
-// Exclude a class from the document
-/// @cond HIDDEN_SYMBOLS
-static class AirbridgeJson
+internal static class AirbridgeJson
 {
     /// <summary>
     /// Parses the string json into a value
@@ -71,7 +69,7 @@ static class AirbridgeJson
         return Parser.Parse(json);
     }
 
-    sealed class Parser : IDisposable
+    private sealed class Parser : IDisposable
     {
         const string WORD_BREAK = "{}[],:\"";
 
@@ -429,7 +427,7 @@ static class AirbridgeJson
         return Serializer.Serialize(obj, pretty, indentText);
     }
 
-    sealed class Serializer
+    private sealed class Serializer
     {
         readonly string indentText;
         bool pretty;
@@ -768,5 +766,3 @@ static class AirbridgeJson
         }
     }
 }
-// ReSharper disable once InvalidXmlDocComment
-/// @endcond
