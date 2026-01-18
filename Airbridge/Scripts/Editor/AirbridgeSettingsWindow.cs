@@ -172,7 +172,7 @@ internal class AirbridgeSettingsWindow : EditorWindow
                     AirbridgeFileUtils.GetPackageAirbridgePluginPath(AirbridgeFileUtils.Platform.Android),
                     entry.GetManifestFileName());
 
-                if (PrepareFile(destAndroidManifestPath))
+                if (AirbridgeFileUtils.PrepareFile(destAndroidManifestPath))
                 {
                     File.Copy(srcAndroidManifestPath, destAndroidManifestPath, true);
                 }
@@ -216,7 +216,7 @@ internal class AirbridgeSettingsWindow : EditorWindow
                 AirbridgeFileUtils.GetPackageAirbridgePluginPath(AirbridgeFileUtils.Platform.Android),
                 "Library_AndroidManifest.xml");
 
-            if (PrepareFile(destLibraryAndroidManifestPath))
+            if (AirbridgeFileUtils.PrepareFile(destLibraryAndroidManifestPath))
             {
                 File.Copy(srcLibraryAndroidManifestPath, destLibraryAndroidManifestPath, true);
             }
@@ -307,7 +307,7 @@ internal class AirbridgeSettingsWindow : EditorWindow
                 + "\n"
                 + "}\n";
             
-            PrepareFile(path);
+            AirbridgeFileUtils.PrepareFile(path);
             File.WriteAllText(path, content);
             Debug.Log("[Airbridge] Updated Android Airbridge settings file.");
         }
@@ -363,44 +363,14 @@ internal class AirbridgeSettingsWindow : EditorWindow
                 + "static BOOL calculateSKAdNetworkByServer = " + airbridgeData.calculateSKAdNetworkByServer.ToString().ToLower() + ";\n"
                 + "\n"
                 + "#endif\n";
-            
-            PrepareFile(path);
+
+            AirbridgeFileUtils.PrepareFile(path);
             File.WriteAllText(path, content);
             Debug.Log("[Airbridge] Updated iOS Airbridge settings file.");
         }
         catch (Exception e)
         {
             Debug.LogError($"[Airbridge] Failed to update iOS Airbridge settings file: {e.Message}");
-        }
-    }
-
-    private static bool PrepareFile(string path, bool forceUpdate = false)
-    {
-        try
-        {
-            if (string.IsNullOrEmpty(path) ||
-                File.Exists(path) ||
-                Directory.Exists(path)) return false;
-
-            var directory = Path.GetDirectoryName(path);
-            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
-
-            File.Create(path).Dispose();
-            if (forceUpdate)
-            {
-                AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
-            }
-
-            Debug.Log($"[Airbridge] File created: '{path}'");
-            return true;
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"[Airbridge] Failed to prepare file '{path}': {e.Message}");
-            throw;
         }
     }
 }

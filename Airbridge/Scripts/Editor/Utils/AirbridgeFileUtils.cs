@@ -69,6 +69,36 @@ internal static class AirbridgeFileUtils
         iOS
     }
 
+    internal static bool PrepareFile(string path, bool forceUpdate = false)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(path) ||
+                File.Exists(path) ||
+                Directory.Exists(path)) return false;
+
+            var directory = Path.GetDirectoryName(path);
+            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            File.Create(path).Dispose();
+            if (forceUpdate)
+            {
+                AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
+            }
+
+            Debug.Log($"[Airbridge] File created: '{path}'");
+            return true;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[Airbridge] Failed to prepare file '{path}': {e.Message}");
+            throw;
+        }
+    }
+
     internal static void SafeRemoveFiles(List<string> paths)
     {
         paths.SelectMany(path => new string[] { path + MetaPrefix, path })
@@ -135,7 +165,7 @@ internal static class AirbridgeFileUtils
             /* ignored */
         }
     }
-    
+
     private static string ParentDirectory(this string path, int depth = 0)
     {
         if (depth < 0) depth = 0;

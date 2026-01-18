@@ -11,10 +11,7 @@ internal class AirbridgeMigrationHandler
 {
     private const string Version = "${WRAPPER_VERSION}";
 
-    private static string MigrationDirectoryPath => Path.Combine(AirbridgeFileUtils.GetPackageDataPath(),
-        "Airbridge", "Scripts", "Editor", "Migration");
-
-    private static string SavedVersionFilePath => Path.Combine(MigrationDirectoryPath, "SavedVersion.txt");
+    private static string SavedVersionFilePath => Path.Combine(Application.dataPath, "Airbridge", "SavedVersion.txt");
 
     private static AirbridgeVersion SavedVersion
     {
@@ -59,6 +56,7 @@ internal class AirbridgeMigrationHandler
         });
 
         // Write latest version
+        AirbridgeFileUtils.PrepareFile(SavedVersionFilePath);
         File.WriteAllText(SavedVersionFilePath, Version);
     }
 }
