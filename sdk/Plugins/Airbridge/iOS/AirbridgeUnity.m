@@ -10,7 +10,7 @@
 #import <Airbridge/Airbridge.h>
 
 #import "AUConvert.h"
-#import "Libraries/Plugins/Airbridge/iOS/AUAppSetting.h"
+#import "Libraries/Plugins/iOS/Airbridge/AUAppSetting.h"
 
 @implementation AirbridgeUnity
 

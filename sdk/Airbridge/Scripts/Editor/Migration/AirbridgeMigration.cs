@@ -50,10 +50,8 @@ internal abstract class AirbridgeMigration
 
             AirbridgeFileUtils.SafeRemoveDirectories(new List<string>()
             {
-                Path.Combine(Application.dataPath, "Plugins", "Android", "Airbridge"),
-                Path.Combine(Application.dataPath, "Plugins", "iOS", "Airbridge"),
-
                 oldMigrationDirPath,
+                Path.Combine(Application.dataPath, "Plugins", "Android", "Airbridge"),
                 Path.Combine(AirbridgeFileUtils.GetPackageDataPath(), "Plugins", "Android", "Airbridge.androidlib"),
             });
         }

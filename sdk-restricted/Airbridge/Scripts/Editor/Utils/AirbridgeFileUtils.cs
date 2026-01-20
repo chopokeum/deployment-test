@@ -27,14 +27,17 @@ internal static class AirbridgeFileUtils
     }
 
     /// <summary>
-    /// Unity 프로젝트의 Assets/Plugins/Airbridge/{Platform} 폴더 경로를 반환합니다.
+    /// Unity 프로젝트의 Platform 폴더 경로를 반환합니다.
     /// 해당 경로가 존재하지 않으면 새로 생성한 후 반환합니다.
     /// </summary>
     internal static string GetProjectAirbridgePluginPath(Platform platform)
     {
         try
         {
-            var airbridgeDirPath = Path.Combine(Application.dataPath, "Plugins", "Airbridge", platform.ToString());
+            var pluginDirPath = Path.Combine(Application.dataPath, "Plugins");
+            var airbridgeDirPath = (platform == Platform.Android)
+                ? Path.Combine(pluginDirPath, "Airbridge", platform.ToString())
+                : Path.Combine(pluginDirPath, platform.ToString(), "Airbridge");
 
             if (!Directory.Exists(airbridgeDirPath))
             {

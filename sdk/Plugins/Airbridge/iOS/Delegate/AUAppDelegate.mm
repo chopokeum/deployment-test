@@ -11,7 +11,7 @@
 #import <Airbridge/Airbridge.h>
 
 #import "AirbridgeUnity.h"
-#import "Libraries/Plugins/Airbridge/iOS/AUAppSetting.h"
+#import "Libraries/Plugins/iOS/Airbridge/AUAppSetting.h"
 
 @implementation AUAppDelegate
 

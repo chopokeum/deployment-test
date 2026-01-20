@@ -6,7 +6,7 @@
 //
 
 #import "AirbridgeUnity+Deeplink.h"
-#import "Libraries/Plugins/Airbridge/iOS/AUAppSetting.h"
+#import "Libraries/Plugins/iOS/Airbridge/AUAppSetting.h"
 
 @implementation AirbridgeUnity (Deeplink)
 

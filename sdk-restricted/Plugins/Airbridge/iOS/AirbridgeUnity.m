@@ -10,7 +10,7 @@
 #import <Airbridge/Airbridge.h>
 
 #import "AUConvert.h"
-#import "Libraries/Plugins/Airbridge/iOS/AUAppSetting.h"
+#import "Libraries/Plugins/iOS/Airbridge/AUAppSetting.h"
 
 @implementation AirbridgeUnity
 
@@ -79,7 +79,7 @@
     ];
     
     builder = [builder setSDKAttributes: @{
-        @"wrapperName": @"airbridge-unity-sdk",
+        @"wrapperName": @"airbridge-unity-sdk-restricted",
         @"wrapperVersion": @"4.8.0"
     }];
     
