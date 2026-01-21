@@ -83,12 +83,12 @@ internal class AirbridgeUnsupportedPlugin: IAirbridgePlugin
 
     private void UnsupportedPlatform()
     {
-        Debug.Log("[Airbridge] Airbridge is not implemented this method on this platform.");
+        Debug.Log("[Airbridge] This method is not supported on this platform.");
     }
     
     private T UnsupportedPlatform<T>(T toReturn)
     {
-        Debug.Log("[Airbridge] Airbridge is not implemented this method on this platform.");
+        Debug.Log("[Airbridge] This method is not supported on this platform.");
         return toReturn;
     }
 }

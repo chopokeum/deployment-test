@@ -1,9 +1,9 @@
 #if UNITY_EDITOR
 
-using System;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
+using UnityEngine;
 
 internal class AirbridgeSettingsBuildProcessor : IPreprocessBuildWithReport
 {
@@ -11,26 +11,22 @@ internal class AirbridgeSettingsBuildProcessor : IPreprocessBuildWithReport
 
     public void OnPreprocessBuild(BuildReport report)
     {
-        Console.WriteLine("AirbridgeSettingsBuildProcessor.OnPreprocessBuild for target " + report.summary.platform);
+        AirbridgeBuildContext.IsDevelopment = (report.summary.options & BuildOptions.Development) != 0;
+        var platform = report.summary.platform;
 
-        AirbridgeSettingsWindow.IsDevelopment = (report.summary.options & BuildOptions.Development) != 0;
+        Debug.Log("[Airbridge] AirbridgeSettingsBuildProcessor.OnPreprocessBuild: " +
+                  $"isDevelopment={{{AirbridgeBuildContext.IsDevelopment}}}, platform={{{platform}}}");
 
-        switch (report.summary.platform)
-        {
-            case BuildTarget.Android:
-                AirbridgeSettingsWindow.UpdateAndroidNativeCode();
-                AirbridgeSettingsWindow.UpdateAndroidAirbridgeSettings();
-                break;
-            case BuildTarget.iOS:
-                AirbridgeSettingsWindow.UpdateIOSAppSetting();
-                break;
-            default:
-                return;
-        }
+        AirbridgeSettingsPlatformProcessor.Process(platform);
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
+}
+
+public static class AirbridgeBuildContext
+{
+    public static bool IsDevelopment;
 }
 
 #endif

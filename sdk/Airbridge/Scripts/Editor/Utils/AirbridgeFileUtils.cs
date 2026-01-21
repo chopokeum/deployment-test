@@ -176,7 +176,9 @@ internal static class AirbridgeFileUtils
         var dir = path;
         for (var i = 0; i < depth; i++)
         {
-            dir = Path.GetDirectoryName(dir);
+            var parentDir = Path.GetDirectoryName(dir);
+            if (parentDir == null) break;
+            dir = parentDir;
         }
 
         return dir;

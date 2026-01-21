@@ -13,9 +13,9 @@ public class AirbridgeXcodeSettingsProcesser
     public static void OnPostBuild(BuildTarget buildTarget, string pathToBuiltProject)
     {
         if (buildTarget != BuildTarget.iOS) return;
-        
+
         List<string> universalLink = new List<string>();
-        AirbridgeData airbridgeData = AirbridgeSettingsWindow.GetAirbridgeData();
+        AirbridgeData airbridgeData = AirbridgeData.Resolve(AirbridgeBuildContext.IsDevelopment);
         if (!string.IsNullOrEmpty(airbridgeData.appName))
         {
             universalLink.Add($"{airbridgeData.appName}.abr.ge");
@@ -117,7 +117,7 @@ public class AirbridgeXcodeSettingsProcesser
     {
         const string customDomainsKey = "co.ab180.airbridge.trackingLink.customDomains";
 
-        List<string> customDomainList = AirbridgeSettingsWindow.GetAirbridgeData().customDomainList;
+        List<string> customDomainList = AirbridgeData.Resolve(AirbridgeBuildContext.IsDevelopment).customDomainList;
         if (customDomainList.Count == 0)
         {
             return;

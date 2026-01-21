@@ -180,8 +180,8 @@ internal class AndroidManifest
             }
         }
     }
-    
-    public void ResetAirbridgeAndroidManifest(AndroidManifest androidManifest)
+
+    public void ClearApplicationAndAddActivities(AndroidManifest androidManifest)
     {
         application.RemoveAll();
         unityActivities.Clear();
@@ -197,7 +197,7 @@ internal class AndroidManifest
                 element.SetAttribute(exportedAttrKey, androidUri,
                     unityActivity.GetAttribute(exportedAttrKey, androidUri));
             }
-            
+
             application.AppendChild(element);
             unityActivities.Add(element);
         }

@@ -563,7 +563,7 @@ public class Airbridge
 #if (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR
         return data.ContainsKey("airbridge-uninstall-tracking");
 #else
-        Debug.Log("[Airbridge] Airbridge is not implemented this method on this platform.");
+        Debug.Log("[Airbridge] This method is not supported on this platform.");
         return false;
 #endif
     }
